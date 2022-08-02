@@ -12,7 +12,7 @@ const todosAsc = computed(() => todos.value.sort((a, b) => {
 }))
 
 const addTodo = () => {
-    if(inputContent.value.trim() === '' || inputCategory.value === null) {
+    if(inputContent?.value.trim() === '' || inputCategory?.value === null) {
       return
     } 
     todos.value.push({
@@ -54,10 +54,10 @@ onMounted(() => {
       <h3>CREATE A TODO</h3>
       <form @submit.prevent="addTodo">
         <h4>What's on your todo list?</h4>
-        <input type="text" placeholder="e. g. learn Vue" v-model="inputContent" />
+        <input type="text" placeholder="Enter the task name please" v-model="inputContent" />
 
-        <h4>Pick a category please</h4>
-        <div class="options">
+        <h4 v-if="inputContent !== ''">Pick a category please</h4>
+        <div v-if="inputContent !== ''" class="options">
           <label>
             <input type="radio" name="category" id="category1" value="business" v-model="inputCategory" />
             <span class="bubble business"></span>
@@ -71,12 +71,12 @@ onMounted(() => {
           </label>
         </div>
 
-        <input type="submit" value="Add todo" />
+        <input v-if="inputCategory && inputCategory.value !== null" type="submit" value="Add todo" />
 
       </form>
     </section>
 
-    <setcion class="todo-list">
+    <section class="todo-list">
         <h3 v-if="todosAsc.length !== 0">TODO LIST</h3>
       <div class="list">
         <div v-for="todo in todosAsc" :class="`todo-item ${todo.done && 'done'}`">
@@ -97,7 +97,7 @@ onMounted(() => {
 						<button class="delete" @click="removeTodo(todo)">Delete</button>
 					</div></div>
       </div>
-    </setcion>
+    </section>
   </main>
 </template>
 
